@@ -1,5 +1,6 @@
 package com.formation.gestionDesTicket.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class Apprenant extends Utilisateur {
-
-    @OneToMany(mappedBy = "apprenant")
+    @JsonIgnore
+    @OneToMany(mappedBy = "apprenant",cascade = CascadeType.ALL)
     private Set<Ticket> tickets;
 
     @ManyToOne

@@ -18,6 +18,7 @@ public abstract class Utilisateur {
     private String prenom;
     private String nom;
     private String email;
-    private String role;
     private String mdp;
+    @ManyToOne
+    private Role role;
 }

@@ -1,5 +1,6 @@
 package com.formation.gestionDesTicket.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ public class Priorite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPriorite;
     private String nomPriorite;
-    @OneToMany(mappedBy = "priorite")
+    @JsonIgnore
+    @OneToMany(mappedBy = "priorite",cascade = CascadeType.ALL)
     private List<Ticket>tickets;
 }
