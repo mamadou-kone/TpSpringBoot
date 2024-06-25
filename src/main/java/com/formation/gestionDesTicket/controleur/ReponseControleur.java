@@ -14,9 +14,9 @@ import java.util.List;
 @Data
 public class ReponseControleur {
     private final ReponseService reponseService;
-    @PostMapping("/creationReponse")
-    public Reponse creation(@RequestBody Reponse reponse){
-        return reponseService.creerReponse(reponse);
+    @PostMapping("/creationReponse/{id}")
+    public Reponse creation(@PathVariable Long id,@RequestBody Reponse reponse){
+        return reponseService.creerReponse(id,reponse);
     }
 
 

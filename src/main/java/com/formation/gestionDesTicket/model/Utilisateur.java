@@ -17,6 +17,7 @@ public abstract class Utilisateur {
     private Long id;
     private String prenom;
     private String nom;
+    @Column(unique = true ,nullable = false)
     private String email;
     private String mdp;
     @ManyToOne

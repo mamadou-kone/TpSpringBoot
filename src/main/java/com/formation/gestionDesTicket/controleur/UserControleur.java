@@ -2,6 +2,7 @@ package com.formation.gestionDesTicket.controleur;
 
 import com.formation.gestionDesTicket.model.Utilisateur;
 import com.formation.gestionDesTicket.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Data
+@Tag(name ="Utilisateur" , description = "classe mère utilisateur")
 public class UserControleur {
     private final UserService userService;
     @PostMapping("/ajoutUser")

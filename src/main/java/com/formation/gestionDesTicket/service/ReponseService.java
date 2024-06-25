@@ -5,7 +5,7 @@ import com.formation.gestionDesTicket.model.Reponse;
 import java.util.List;
 
 public interface ReponseService {
-    Reponse creerReponse(Reponse reponse);
+    Reponse creerReponse(Long id,Reponse reponse);
     List<Reponse> lireReponse();
     Reponse moddifierReponse(Long id,Reponse reponse);
     String suppReponse(Long id);

@@ -1,7 +1,11 @@
 package com.formation.gestionDesTicket.service.serviceImplement;
 
+import com.formation.gestionDesTicket.Mail.Messagerie;
 import com.formation.gestionDesTicket.model.Reponse;
+import com.formation.gestionDesTicket.model.Ticket;
+import com.formation.gestionDesTicket.repository.AprenantRepository;
 import com.formation.gestionDesTicket.repository.ReponseRepository;
+import com.formation.gestionDesTicket.repository.TicketRepository;
 import com.formation.gestionDesTicket.service.ReponseService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +17,25 @@ import java.util.List;
 public class ReponseServiceImplement implements ReponseService {
     @Autowired
     ReponseRepository reponseRepository ;
+    @Autowired
+    private Messagerie messagerie;
+    @Autowired
+    TicketRepository ticketRepository;
+    @Autowired
+    AprenantRepository aprenantRepository;
     @Override
-    public Reponse creerReponse(Reponse reponse) {
+    public Reponse creerReponse(Long id,Reponse reponse) {
+        ticketRepository.findById(id)
+                        .map(T-> {
+                            aprenantRepository.findById(T.getApprenant().getId())
+                                    .map(A->{
+                                        T.setStatuts("Repondu");
+                                        reponse.setTicket(T);
+                                      return   ticketRepository.save(T);
+                                    }).orElseThrow(()->new RuntimeException());
+                              return reponseRepository.save(reponse);
+                        }).orElseThrow(()->new RuntimeException());
+        messagerie.envoiesMessage(reponse.getTicket().getApprenant().getEmail(),"Votre ticket a été répondu");
         return reponseRepository.save(reponse);
     }
 

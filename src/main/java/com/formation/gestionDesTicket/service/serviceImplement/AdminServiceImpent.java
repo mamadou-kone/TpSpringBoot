@@ -1,8 +1,10 @@
 package com.formation.gestionDesTicket.service.serviceImplement;
 
+import com.formation.gestionDesTicket.Mail.Messagerie;
 import com.formation.gestionDesTicket.model.Admin;
 import com.formation.gestionDesTicket.repository.AdminRepository;
 import com.formation.gestionDesTicket.service.AdminService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,12 +13,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @Data
+@AllArgsConstructor
 public class AdminServiceImpent implements AdminService {
     private final AdminRepository adminRepository;
-    @Autowired
     PasswordEncoder passwordEncoder;
+    private Messagerie messagerie;
     @Override
     public Admin creer(Admin admin) {
+        messagerie.envoiesMessage(admin.getEmail(),"Votre compte a été créé avec succès, votre mot de passe est :"+admin.getMdp());
         admin.setMdp(passwordEncoder.encode(admin.getMdp()));
         return adminRepository.save(admin);
     }

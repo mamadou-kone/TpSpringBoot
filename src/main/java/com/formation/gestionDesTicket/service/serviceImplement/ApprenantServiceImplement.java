@@ -1,8 +1,10 @@
 package com.formation.gestionDesTicket.service.serviceImplement;
 
+import com.formation.gestionDesTicket.Mail.Messagerie;
 import com.formation.gestionDesTicket.model.Apprenant;
 import com.formation.gestionDesTicket.repository.AprenantRepository;
 import com.formation.gestionDesTicket.service.ApprenantService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,12 +14,15 @@ import java.util.List;
 
 @Service
 @Data
+@AllArgsConstructor
 public class ApprenantServiceImplement implements ApprenantService{
     private final AprenantRepository aprenantRepository;
+    private Messagerie messagerie;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Override
     public Apprenant creer(Apprenant apprenant) {
+        messagerie.envoiesMessage(apprenant.getEmail(),"Votre compte a été créer avec succès, votre mot de passe est : "+apprenant.getMdp());
         apprenant.setMdp(passwordEncoder.encode(apprenant.getMdp()));
         return aprenantRepository.save(apprenant);
     }
