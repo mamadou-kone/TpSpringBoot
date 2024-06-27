@@ -1,23 +1,25 @@
 package com.formation.gestionDesTicket.securiteConfig;
 
+import com.formation.gestionDesTicket.model.Utilisateur;
+import com.formation.gestionDesTicket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+
+import java.util.Optional;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -26,6 +28,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class securiteConfiguration {
     @Autowired
     private UserDetailsService userDetailsService;
+    private UserRepository userRepository;
     @Bean
     public DefaultSecurityFilterChain matcherSecurityWebFilterChain(HttpSecurity httpSecurity) throws Exception {
      httpSecurity
@@ -34,7 +37,7 @@ public class securiteConfiguration {
         registry.requestMatchers("/user/**").permitAll();
         registry.requestMatchers("/admin/**").hasRole("ADMIN");
         registry.requestMatchers("/apprenant/**").hasRole("FORMATEUR");
-        registry.requestMatchers("/ticket/**").permitAll();
+        registry.requestMatchers("/ticket/**").hasRole("APPRENANT");
         registry.requestMatchers("/baseConnaissace/**").hasRole("FORMATEUR");
         registry.requestMatchers("/formateur/**").hasRole("ADMIN");
         registry.requestMatchers("/categorie").hasRole("FORMATEUR");
@@ -76,8 +79,12 @@ public class securiteConfiguration {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
+
 }

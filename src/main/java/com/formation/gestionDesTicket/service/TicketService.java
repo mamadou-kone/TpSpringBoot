@@ -5,7 +5,7 @@ import com.formation.gestionDesTicket.model.Ticket;
 import java.util.List;
 
 public interface TicketService {
-    Ticket creerTicket(Ticket ticket);
+    Ticket creerTicket(Ticket ticketw);
     List<Ticket>lire();
     Ticket modifTicket(Long idTicket,Ticket ticket);
     Ticket ouvrir(Long id,Ticket ticket);

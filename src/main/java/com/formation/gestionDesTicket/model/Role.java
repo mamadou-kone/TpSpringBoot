@@ -1,5 +1,6 @@
 package com.formation.gestionDesTicket.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,4 +22,5 @@ public class Role{
     @JsonIgnore
     @OneToMany(mappedBy = "role",cascade = CascadeType.ALL)
     private Set<Utilisateur> utilisateur;
+
 }

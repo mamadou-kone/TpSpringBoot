@@ -1,8 +1,11 @@
 package com.formation.gestionDesTicket.service.serviceImplement;
 
 import com.formation.gestionDesTicket.Mail.Messagerie;
+import com.formation.gestionDesTicket.model.Admin;
 import com.formation.gestionDesTicket.model.Formateur;
+import com.formation.gestionDesTicket.model.Utilisateur;
 import com.formation.gestionDesTicket.repository.FormateurRepository;
+import com.formation.gestionDesTicket.securiteConfig.SessionUser;
 import com.formation.gestionDesTicket.service.FormateurService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,16 +14,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Data
 @AllArgsConstructor
 public class FormateurServiceImplement implements FormateurService {
     private final FormateurRepository formateurRepository;
-
+@Autowired
+    SessionUser sessionUser;
     PasswordEncoder passwordEncoder;
      private Messagerie message;
     @Override
     public Formateur creer(Formateur form) {
+        Optional<Utilisateur> utilisateur=sessionUser.getAuthenticatedUser();
+        form.setAdmin((Admin) utilisateur.get());
         message.envoiesMessage(form.getEmail(), "Votre compte a été créer avec succès avec comme mot de pass : "+form.getMdp());
         form.setMdp(passwordEncoder.encode(form.getMdp()));
         return formateurRepository.save(form);

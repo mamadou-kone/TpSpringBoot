@@ -1,5 +1,6 @@
 package com.formation.gestionDesTicket.securiteConfig;
 
+import com.formation.gestionDesTicket.model.Apprenant;
 import com.formation.gestionDesTicket.model.Utilisateur;
 import com.formation.gestionDesTicket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +16,23 @@ import java.util.Optional;
 public class UserDetailService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
        Optional<Utilisateur> user= userRepository.findByEmail(email);
+        var userObjet=user.get();
        if(user.isPresent()){
-           var userObjet=user.get();
           return  User.builder()
                   .username(userObjet.getEmail())
                   .password(userObjet.getMdp())
                   .roles(userObjet.getRole().getNom())
                   .build();
+
        }else {
            throw new UsernameNotFoundException(email);
        }
     }
+
 
    /* private String[] getRole(Utilisateur user) {
         if(user.getRole()==null){
